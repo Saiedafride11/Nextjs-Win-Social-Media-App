@@ -1,4 +1,5 @@
-import { Providers } from "@/redux/provider";
+
+import Providers from '@/redux/app/provider';
 import { Roboto } from 'next/font/google';
 import "./globals.css";
  

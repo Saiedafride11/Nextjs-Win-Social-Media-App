@@ -1,19 +1,44 @@
 "use client";
-
+import { logOutUser } from "@/redux/features/Auth/authSlice";
+import { signOut } from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiOutlineClose, AiOutlineMenuFold } from "react-icons/ai";
+import { IoLogOutOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import Auth from "../firebase/firebase.init";
+import { ToastSuccess } from "../utils/toast";
 
 const Header = () => {
+      const { email } = useSelector((state) => state.user);
+      const dispatch = useDispatch();
+      const router = useRouter();
+      // logout function
+      const logOut = () => {
+        signOut(Auth)
+          .then(() => {
+            // Sign-out successful.
+            dispatch(logOutUser());
+            localStorage.clear();
+            ToastSuccess("Logout Successful!");
+            router.push("/");
+          })
+          .catch((error) => {
+            // An error happened.
+          });
+      };
+
       let Links = [
             { name: "Home", link: "/" },
             { name: "Media", link: "/media" },
             { name: "Message", link: "/message" },
-            { name: "About ", link: "/about " },
-            { name: "Login", link: "/login" },
+            { name: "About ", link: "/about " }
          ];
-        let [open, setOpen] = useState(false);
+      let [open, setOpen] = useState(false);
+
+      console.log("email---", email)
       return (
             <main className="w-full h-full flex flex-col justify-center items-center">
                    <div className="bg-[#1b74e4] shadow-md w-full h-full flex justify-center items-center">
@@ -35,18 +60,38 @@ const Header = () => {
                                     }`}
                               >
                                     {Links.map((link) => (
-                                          <li
-                                                key={link.name}
-                                                className="md:ml-8 text-sm md:text-xs md:my-0 my-7"
-                                          >
-                                                <Link
-                                                      href={link.link}
-                                                      className="text-gray-800 md:text-white hover:text-gray-400 duration-500"
+                                                <li
+                                                      key={link.name}
+                                                      className="md:ml-8 text-lg md:text-xs md:my-0 my-7"
                                                 >
-                                                      {link.name}
-                                                </Link>
-                                          </li>
+                                                      <Link
+                                                            href={link.link}
+                                                            className="text-gray-800 md:text-white hover:text-gray-400 duration-500"
+                                                      >
+                                                            {link.name}
+                                                      </Link>
+                                                </li>
                                     ))}
+                                    <li className="md:ml-8 text-lg md:text-xs md:my-0 my-7">
+                                          {
+                                                email ? 
+                                                <Link href="/login">
+                                                      <button
+                                                            onClick={logOut}
+                                                            className="flex justify-center items-center flex-row text-xs font-light text-white hover:text-gray-100 transition"
+                                                      >
+                                                            <span className="mr-1 text-xl">
+                                                                  <IoLogOutOutline />
+                                                            </span>
+                                                            <span>LogOut</span>
+                                                      </button>
+                                                </Link>
+                                                :
+                                                <Link href="/login" className="text-gray-800 md:text-white hover:text-gray-400 duration-500">
+                                                      Login
+                                                </Link>
+                                          }
+                                    </li>
                               </ul>
                         </div>
                   </div>
