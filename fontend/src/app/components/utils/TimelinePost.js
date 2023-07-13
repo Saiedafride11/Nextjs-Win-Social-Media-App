@@ -4,8 +4,8 @@ import likeSvg from "../../../assets/like.svg";
 import profileImage from "../../../assets/me.jpg";
 import LikeCommentShare from './LikeCommentShare';
 
-const TimelinePost = ({timeline}) => {
-      const {userPhoto, userName, time, post, image, _id} = timeline;
+const TimelinePost = ({timelinePost}) => {
+      const {userPhoto, userName, post, image, _id} = timelinePost;
 
       return (
             <div className="py-5 box-border bg-white border-2 border-white p-5 rounded-md shadow-lg shadow-gray-300/80 mb-3">
@@ -16,7 +16,7 @@ const TimelinePost = ({timeline}) => {
                               </div>
                               <div>
                                     <h4 className="text-lg text-gray-700 ml-2">{userName}</h4>
-                                    <h4 className="text-sm text-gray-500 mx-2 mt-[-5px]">{time}h .</h4>
+                                    <h4 className="text-sm text-gray-500 mx-2 mt-[-5px]">12h .</h4>
                               </div>
                         </div>
                         <div className="flex items-center">
@@ -29,7 +29,7 @@ const TimelinePost = ({timeline}) => {
                               {post?.length < 250 ? post : `${post?.slice(0, 250)}  ...  `}
                               <Link href={`/media/${_id}`} className="font-bold">  See details</Link>
                         </p>
-                        <Image src={image} width={2000} height={2000} alt="image" className="w-full"/>
+                        <Image src={`data:image/png;base64,${image}`} width={2000} height={2000} alt="image" className="w-full"/>
                   </div>
                   <div className="flex justify-between my-2">
                         <div className="flex">

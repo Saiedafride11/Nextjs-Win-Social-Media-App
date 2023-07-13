@@ -12,33 +12,12 @@ const PostsApi = apiSlice.injectEndpoints({
       query: (id) => `/posts/${id}`,
       providesTags: ["posts"],
     }),
-    // post Apply
+    // post Posts
     postPostsApi: builder.mutation({
       query: (data) => ({
         url: "/posts",
         method: "POST",
         body: data,
-      }),
-      invalidatesTags: ["posts"],
-    }),
-    // update Post
-//     updatePost: builder.mutation({
-//       query: ({ _id, updateStatus }) => ({
-//         url: `/posts/${_id}`,
-//         method: "PATCH",
-//         body: updateStatus,
-//       }),
-//       invalidatesTags: (result, error, arg) => [
-//         "posts",
-//         { type: "posts", id: arg.id },
-//       ],
-//     }),
-    // delete Posts
-    deletePosts: builder.mutation({
-      // delete single member ------------------->
-      query: (id) => ({
-        url: `/posts/${id}`,
-        method: "DELETE",
       }),
       invalidatesTags: ["posts"],
     }),

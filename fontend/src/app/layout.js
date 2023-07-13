@@ -11,8 +11,8 @@ const roboto = Roboto({
 });
 
 export const metadata = {
-  title: "Win Store",
-  description: "Win Store E-commerce Website",
+  title: "Win",
+  description: "Win Social Media App",
 };
 
 export default function RootLayout({ children }) {

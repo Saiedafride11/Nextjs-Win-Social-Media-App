@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { usePostPostsApiMutation } from "@/redux/service/api/postsApi";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -8,7 +9,7 @@ import feelingsIcon from "../../../assets/feelings.png";
 import profileImage from "../../../assets/me.jpg";
 import photoIcon from "../../../assets/photos.png";
 import videoIcon from "../../../assets/video.png";
-import { ToastSuccess } from "../utils/toast";
+import { ToastError, ToastSuccess } from "../utils/toast";
 
 const createPostIcons = [
       { "icon": videoIcon, "title": "Live video" },
@@ -18,6 +19,8 @@ const createPostIcons = [
 
 const CreatePost = () => {
       const { email } = useSelector((state) => state.user);
+      const [postPostsApi, { isLoading, isSuccess, isError }] = usePostPostsApiMutation();
+      
       const [createPostOpen, setCreatePostOpen] = useState(true);
       const [post, setPost] = useState('');
       const [image, setImage] = useState(null);
@@ -33,36 +36,59 @@ const CreatePost = () => {
             }
       }
 
+     
+
   // submit input data
   const handleLoginSubmit = (e) => {
       e.preventDefault();
       if (!image) {
           return;
       }
+
+      
+      const reaction = []
+      const comment = []
       const formData = new FormData();
       formData.append('userName', "Saied Afride");
       formData.append('userPhoto', "https://lh3.googleusercontent.com/a/AAcHTtfWlew0XE77fyh6m46Bd9g3_vVleba8Ri7ryrIKv6H8qW8=s96-c");
       formData.append('post', post);
       formData.append('email', email);
+      formData.append('reaction', reaction);
+      formData.append('comment', comment);
       formData.append('image', image);
 
-      fetch('http://localhost:5000/posts', {
-          method: 'POST',
-          body: formData
-      })
-          .then(res => res.json())
-          .then(data => {
-              if (data.insertedId) {
-                  setPost("");
-                  setImage(null);
-                  ToastSuccess("New Post Successful!");
-                  setCreatePostOpen(!createPostOpen);
-              }
-          })
-          .catch(error => {
-              console.error('Error:', error);
-          });
+      // fetch('http://localhost:5000/posts', {
+      //     method: 'POST',
+      //     body: formData
+      // })
+      //     .then(res => res.json())
+      //     .then(data => {
+      //         if (data.insertedId) {
+      //             setPost("");
+      //             setImage(null);
+      //             ToastSuccess("New Post Successful!");
+      //             setCreatePostOpen(!createPostOpen);
+      //         }
+      //     })
+      //     .catch(error => {
+      //         console.error('Error:', error);
+      //     });
+      
+      postPostsApi(formData);
   };
+
+  useEffect(() => {
+      if (!isLoading && isSuccess) {
+        router.push("/");
+        setPost("");
+        setImage(null);
+        setCreatePostOpen(!createPostOpen);
+        ToastSuccess("New Post Successful!");
+      }
+      if (!isLoading && !isSuccess && isError) {
+        ToastError("Sorry! something was wrong.");
+      }
+    }, [isLoading, isSuccess, isError]);
 
 
       return (
