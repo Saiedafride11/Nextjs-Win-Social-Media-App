@@ -2,8 +2,10 @@ import Auth from "@/app/components/firebase/firebase.init";
 import { ToastError, ToastSuccess } from "@/app/components/utils/toast";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup
 } from "firebase/auth";
 
 
@@ -33,11 +35,29 @@ export const signInUser = createAsyncThunk(
   }
 );
 
+// user google signIn part
+const googleProvider = new GoogleAuthProvider();
+export const googleSignInUser = createAsyncThunk(
+  "Auth/signInUser",
+  async () => {
+    const result = await signInWithPopup(Auth, googleProvider);
+    localStorage.setItem("email", JSON.stringify(result.user.email));
+    return result.user.email;
+  }
+);
+
 const authSlice = createSlice({
   name: "Auth",
   initialState,
   reducers: {
     saveUser: (state, action) => {
+      // if(JSON.parse(localStorage.getItem("email"))){
+      //   // for google sign in
+      //   const email = JSON.parse(localStorage.getItem("email"));
+      //   state.email = email;
+      // }
+      // else{
+      // }
       state.email = action.payload;
       localStorage.setItem("email", JSON.stringify(action.payload));
       state.isLoading = false;

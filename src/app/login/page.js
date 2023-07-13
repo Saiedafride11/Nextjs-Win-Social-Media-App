@@ -1,6 +1,6 @@
 "use client";
 
-import { signInUser } from "@/redux/features/Auth/authSlice";
+import { googleSignInUser, signInUser } from "@/redux/features/Auth/authSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -84,6 +84,15 @@ const Login = () => {
                 className="text-white bg-[#1b74e4] border-0 py-2 px-8 focus:outline-none hover:bg-[#2788ff] rounded text-lg"
               >
                 Sign In
+              </button>
+
+              <p className="text-lg text-center text-white">------------- or -------------</p>
+              
+              <button
+                onClick={() => dispatch(googleSignInUser())}
+                className="text-white bg-[#1b74e4] border-0 py-2 px-8 focus:outline-none hover:bg-[#2788ff] rounded text-lg"
+              >
+                Google Sign in
               </button>
               <div className="mt-6 flex justify-between items-center px-2">
                 <div className="flex items-start">

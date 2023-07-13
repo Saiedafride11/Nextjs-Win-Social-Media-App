@@ -13,6 +13,8 @@ import { ToastSuccess } from "../utils/toast";
 
 const Header = () => {
       const { email } = useSelector((state) => state.user);
+      // const localStorageEmail = JSON.parse(localStorage.getItem("email"));
+      
       const dispatch = useDispatch();
       const router = useRouter();
       // logout function
@@ -38,7 +40,7 @@ const Header = () => {
          ];
       let [open, setOpen] = useState(false);
 
-      console.log("email---", email)
+     
       return (
             <main className="w-full h-full flex flex-col justify-center items-center">
                    <div className="bg-[#1b74e4] shadow-md w-full h-full flex justify-center items-center">
